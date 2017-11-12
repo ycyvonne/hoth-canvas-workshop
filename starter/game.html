@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HOTH 3 Workshop: Canvas Game</title>
+</head>
+<body>
+<script>
+var canvas;
+var canvasContext;
+
+var ballX = 50;
+var ballY = 50;
+var ballRadius = 10;
+
+const PADDLE_WIDTH = 5;
+const PADDLE_HEIGHT = 100;
+const PADDLE_OFFSET = PADDLE_WIDTH / 2;
+var paddle1Y = 250;
+var paddle2Y = 250;
+
+var player1Score = 0;
+var player2Score = 0;
+
+/*********************************************
+ * code we will modify is below:
+ *********************************************/
+
+ /**
+  * change speeds!
+  */
+
+var ballSpeedX = 20;
+var ballSpeedY = 4;
+var opponentMaxSpeed = 6;
+var frameRate = 50;
+
+window.onload = function() {
+	canvas = document.querySelector('#gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+	// TOOD: call drawFrame() in an interval according to `frameRate`
+	
+	// TODO: update paddle1 according to player mouse movement
+}
+
+function drawFrame() {
+	updateObjects();
+	drawObjects();
+}
+
+function updateObjects() {
+	
+	// TODO: update mouse movement
+
+	// TOOD: prevent ball from bouncing off screen in the Y direction
+
+	// TODO: detect if ball should bounce off paddle
+
+	// TODO: restart match if ball does not bounce off paddle
+
+	opponentMovement();
+}
+
+function drawObjects() {
+
+	// clear out screen
+	drawRect(0, 0, canvas.width, canvas.height, 'black');
+
+	// TODO: draw ball
+
+	// TODO: draw left player paddle
+
+	// draw right player paddle
+	drawRect(canvas.width - PADDLE_WIDTH - PADDLE_OFFSET, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+
+	canvasContext.fillText(player1Score, 100, 100);
+	canvasContext.fillText(player2Score, canvas.width - 100, 100);
+}
+
+/*********************************************
+ * provided functions, do not modify!
+ *********************************************/
+
+function drawRect(leftX, topY, width, height, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.fillRect(leftX, topY, width, height);
+}
+
+function drawCircle(centerX, centerY, radius, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+	canvasContext.fill();
+}
+
+function getMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x: mouseX,
+		y: mouseY
+	};
+}
+
+function resetMatch() {
+	ballSpeedX *= 1;
+	ballX = canvas.width / 2;
+	ballY = canvas.height / 2;
+}
+
+function opponentMovement() {
+	var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT / 2);
+	if(paddle2YCenter < ballY - 35) {
+		paddle2Y += opponentMaxSpeed;
+	} else if(paddle2YCenter > ballY + 35) {
+		paddle2Y -= opponentMaxSpeed;
+	}
+}
+
+</script>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+</body>
+</html>
