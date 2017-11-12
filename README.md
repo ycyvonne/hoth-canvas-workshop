@@ -1,6 +1,6 @@
 # Canvas Workshop
 * Date: Sunday 11/12
-* Workshop Time: 1 PM
+* Workshop Time: 2 PM
 
 #### Hack on the Hill 3
 
