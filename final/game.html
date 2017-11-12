@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HOTH 3 Workshop: Canvas Game</title>
+</head>
+<body>
+<script>
+var canvas;
+var canvasContext;
+
+var ballX = 50;
+var ballY = 50;
+var ballRadius = 10;
+
+const PADDLE_WIDTH = 5;
+const PADDLE_HEIGHT = 100;
+const PADDLE_OFFSET = PADDLE_WIDTH / 2;
+var paddle1Y = 250;
+var paddle2Y = 250;
+
+var player1Score = 0;
+var player2Score = 0;
+
+/*********************************************
+ * code we will modify is below:
+ *********************************************/
+
+ /**
+  * change speeds!
+  */
+
+var ballSpeedX = 20;
+var ballSpeedY = 4;
+var opponentMaxSpeed = 6;
+
+window.onload = function() {
+	canvas = document.querySelector('#gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+	var frameRate = 50;
+	setInterval(drawFrame, frameRate);
+
+	canvas.addEventListener('mousemove', function(evt) {
+		var mousePos = getMousePos(evt);
+		paddle1Y = mousePos.y - PADDLE_OFFSET;
+		console.log('paddle1Y', paddle1Y)
+	});
+}
+
+function drawFrame() {
+	updateObjects();
+	drawObjects();
+}
+
+function updateObjects() {
+	ballX += ballSpeedX;
+	ballY += ballSpeedY;
+
+	if (ballX < (PADDLE_WIDTH + ballRadius)) {
+		if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
+			ballSpeedX *= -1;
+			console.log('bounce, paddleY', paddle1Y)
+		}
+		else {
+			resetMatch();
+			player2Score++;
+		}
+	}
+	if (ballX > canvas.width - (PADDLE_WIDTH + ballRadius)) {
+		if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
+			ballSpeedX *= -1;
+		}
+		else {
+			resetMatch();
+			player1Score++;
+		}
+	}
+	if (ballY < ballRadius || ballY > (canvas.height - ballRadius)) {
+		ballSpeedY *= -1;
+	}
+
+	opponentMovement();
+}
+
+function drawObjects() {
+	// clear out screen
+	drawRect(0, 0, canvas.width, canvas.height, 'black');
+
+	// draw ball
+	drawCircle(ballX, ballY, ballRadius, 'white');
+
+	// draw left player paddle
+	drawRect(PADDLE_OFFSET, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+
+	// draw right player paddle
+	drawRect(canvas.width - PADDLE_WIDTH - PADDLE_OFFSET, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+
+	canvasContext.fillText(player1Score, 100, 100);
+	canvasContext.fillText(player2Score, canvas.width - 100, 100);
+}
+
+/*********************************************
+ * provided functions, do not modify!
+ *********************************************/
+
+function drawRect(leftX, topY, width, height, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.fillRect(leftX, topY, width, height);
+}
+
+function drawCircle(centerX, centerY, radius, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+	canvasContext.fill();
+}
+
+function getMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x: mouseX,
+		y: mouseY
+	};
+}
+
+function resetMatch() {
+	ballSpeedX *= 1;
+	console.log('paddle1Y', paddle1Y)
+	ballX = canvas.width / 2;
+	ballY = canvas.height / 2;
+}
+
+function opponentMovement() {
+	var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT / 2);
+	if(paddle2YCenter < ballY - 35) {
+		paddle2Y += opponentMaxSpeed;
+	} else if(paddle2YCenter > ballY + 35) {
+		paddle2Y -= opponentMaxSpeed;
+	}
+}
+
+</script>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+</body>
+</html>

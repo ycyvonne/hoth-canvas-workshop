@@ -13,4 +13,4 @@ Resources
 A code editor (any of the below)
 * [Sublime Text](https://www.sublimetext.com/3)
 * [Atom](https://atom.io/)
-* Visual Studio Code(https://code.visualstudio.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
