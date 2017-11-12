@@ -43,7 +43,6 @@ window.onload = function() {
 	canvas.addEventListener('mousemove', function(evt) {
 		var mousePos = getMousePos(evt);
 		paddle1Y = mousePos.y - PADDLE_OFFSET;
-		console.log('paddle1Y', paddle1Y)
 	});
 }
 
@@ -59,7 +58,6 @@ function updateObjects() {
 	if (ballX < (PADDLE_WIDTH + ballRadius)) {
 		if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
 			ballSpeedX *= -1;
-			console.log('bounce, paddleY', paddle1Y)
 		}
 		else {
 			resetMatch();
@@ -128,7 +126,6 @@ function getMousePos(evt) {
 
 function resetMatch() {
 	ballSpeedX *= 1;
-	console.log('paddle1Y', paddle1Y)
 	ballX = canvas.width / 2;
 	ballY = canvas.height / 2;
 }
